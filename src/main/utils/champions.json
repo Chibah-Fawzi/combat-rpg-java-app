@@ -1,0 +1,171 @@
+{
+  "champions": [
+    {
+      "id": "valerius",
+      "name": "Valerius the Executioner",
+      "unitClass": "PHYSICAL",
+      "role": "Tanky Sustained DPS & Armor Stripper",
+      "baseStats": {
+        "maxHealth": 1200,
+        "maxMana": 100,
+        "manaRegenPerAttack": 20,
+        "baseAttack": 85
+      },
+      "autoAttack": {
+        "name": "Heavy Cleave",
+        "damageMultiplier": 1.0,
+        "type": "PHYSICAL"
+      },
+      "spells": [
+        {
+          "name": "Armor Sunder",
+          "type": "PHYSICAL",
+          "manaCost": 40,
+          "cooldownTurns": 2,
+          "baseDamage": 120,
+          "effect": {
+            "type": "ARMOR_REDUCTION",
+            "value": 0.25,
+            "durationTurns": 2
+          }
+        },
+        {
+          "name": "Decapitate",
+          "type": "PHYSICAL",
+          "manaCost": 70,
+          "cooldownTurns": 4,
+          "baseDamage": 200,
+          "effect": {
+            "type": "EXECUTE",
+            "thresholdHpPercentage": 0.3,
+            "bonusDamageMultiplier": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "kaelen",
+      "name": "Kaelen the Shadowblade",
+      "unitClass": "PHYSICAL",
+      "role": "High Single-Target Burst & Debuffer",
+      "baseStats": {
+        "maxHealth": 850,
+        "maxMana": 80,
+        "manaRegenPerAttack": 25,
+        "baseAttack": 110
+      },
+      "autoAttack": {
+        "name": "Dual Strike",
+        "damageMultiplier": 1.0,
+        "type": "PHYSICAL"
+      },
+      "spells": [
+        {
+          "name": "Venom Strike",
+          "type": "PHYSICAL",
+          "manaCost": 35,
+          "cooldownTurns": 1,
+          "baseDamage": 80,
+          "effect": {
+            "type": "POISON",
+            "damagePerTurn": 25,
+            "durationTurns": 3
+          }
+        },
+        {
+          "name": "Shadow Step",
+          "type": "PHYSICAL",
+          "manaCost": 60,
+          "cooldownTurns": 3,
+          "baseDamage": 0,
+          "effect": {
+            "type": "BUFF_NEXT_ATTACK",
+            "critMultiplier": 2.0,
+            "manaRegenMultiplier": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "pyra",
+      "name": "Pyra the Arcane Scholar",
+      "unitClass": "MAGICAL",
+      "role": "High AoE & Single-Target Magic Damage",
+      "baseStats": {
+        "maxHealth": 700,
+        "maxMana": 300,
+        "manaRegenPerAttack": 10,
+        "baseAttack": 40
+      },
+      "autoAttack": {
+        "name": "Arcane Bolt",
+        "damageMultiplier": 1.0,
+        "type": "MAGICAL"
+      },
+      "spells": [
+        {
+          "name": "Ignite Spike",
+          "type": "MAGICAL",
+          "manaCost": 80,
+          "cooldownTurns": 0,
+          "baseDamage": 160,
+          "effect": null
+        },
+        {
+          "name": "Infernal Nova",
+          "type": "MAGICAL",
+          "manaCost": 180,
+          "cooldownTurns": 3,
+          "baseDamage": 320,
+          "effect": {
+            "type": "BURN",
+            "damagePerTurn": 40,
+            "durationTurns": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "theron",
+      "name": "Archivist Theron",
+      "unitClass": "MAGICAL",
+      "role": "Disruption, Shielding & Mana Manipulation",
+      "baseStats": {
+        "maxHealth": 750,
+        "maxMana": 250,
+        "manaRegenPerAttack": 12,
+        "baseAttack": 45
+      },
+      "autoAttack": {
+        "name": "Staff Bop",
+        "damageMultiplier": 1.0,
+        "type": "PHYSICAL"
+      },
+      "spells": [
+        {
+          "name": "Temporal Barrier",
+          "type": "MAGICAL",
+          "manaCost": 90,
+          "cooldownTurns": 2,
+          "baseDamage": 0,
+          "effect": {
+            "type": "SHIELD",
+            "shieldAmount": 200,
+            "durationTurns": 2
+          }
+        },
+        {
+          "name": "Mind Siphon",
+          "type": "MAGICAL",
+          "manaCost": 120,
+          "cooldownTurns": 3,
+          "baseDamage": 130,
+          "effect": {
+            "type": "MANA_STEAL",
+            "amount": 50
+          }
+        }
+      ]
+    }
+  ]
+}
