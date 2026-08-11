@@ -62,15 +62,20 @@ public class ChampionsWrapper {
                 System.out.println("Champion '" + champInput + "' not found. Try again.");
                 continue;
             }
+            Champion firstPick = GameInfo.startingPlayer.getChosenChampion();
 
             // 5. Handle commands
                 if(command.equals("show")) {
-                    GameInfo.printChampions(champions);
+                    // Filter out the selected champion if Player 2 is picking
+                    List<Champion> availableChampions = champions.stream()
+                            .filter(champ -> firstPick == null || !champ.getId().equals(firstPick.getId()))
+                            .toList();
+
+                    GameInfo.printChampions(availableChampions);
                 } else if (command.equals("info")) {
                     GameInfo.printChampionDetails(targetChampion);
                     GameInfo.printCommands();
                 } else if (command.equals("select")) {
-                    Champion firstPick = GameInfo.startingPlayer.getChosenChampion();
                     if (activePlayer != GameInfo.startingPlayer && firstPick != null && targetChampion.getId().equals(firstPick.getId())) {
                         System.out.println("You can't select the same champion as the starting player.");
                         continue;
