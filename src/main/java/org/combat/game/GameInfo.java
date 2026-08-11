@@ -115,4 +115,32 @@ public class GameInfo {
                             "> "+chosenChamp.getName() + " has been removed from the pool.\n"
             );
         }
+
+
+        public static void printCombatStart(Player player1, Player player2) {
+            Champion c1 = player1.getChosenChampion();
+            Champion c2 = player2.getChosenChampion();
+
+            if(c1 == null && c2 == null){
+                System.out.println("================================================================================");
+                System.out.println("Please select correct champion");
+                System.out.println("================================================================================");
+            }
+
+            System.out.println("================================================================================");
+            System.out.println("                                 BATTLE BEGINS!                                ");
+            System.out.println("================================================================================");
+            System.out.println();
+            System.out.printf("   %-28s %-28s%n", "[ PLAYER 1 ]", "[ PLAYER 2 ]");
+            System.out.printf("   %-28s %-28s%n", player1.name, player2.name);
+            System.out.printf("   Champion: %-18s Champion: %-18s%n", c1.getName(), c2.getName());
+            System.out.printf("   Role:     %-18s Role:     %-18s%n", c1.getRole(), c2.getRole());
+            System.out.printf("   HP:       [%d/%-13d HP:       [%d/%d]%n",
+                    c1.getBaseStats().getMaxHealth(), c1.getBaseStats().getMaxHealth(),
+                    c2.getBaseStats().getMaxHealth(), c2.getBaseStats().getMaxHealth());
+            System.out.printf("   Mana:     [%d/%-13d Mana:     [%d/%d]%n",
+                    c1.getBaseStats().getMaxMana(), c1.getBaseStats().getMaxMana(),
+                    c2.getBaseStats().getMaxMana(), c2.getBaseStats().getMaxMana());
+            System.out.println();
+        }
 }

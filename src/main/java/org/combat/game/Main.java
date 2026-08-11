@@ -40,5 +40,16 @@ public class Main {
         ChampionsWrapper.selectChampion(player1);
         ChampionsWrapper.selectChampion(player2);
 
+        currentStatus = GameInfo.GameStatus.COMBAT_PHASE;
+
+
+        GameInfo.printCombatStart(player1,player2);
+
+        int player1MaxHealth= player1.getChosenChampion().getBaseStats().getMaxHealth();
+        int player1MaxMana= player1.getChosenChampion().getBaseStats().getMaxMana();
+       player1.getChosenChampion().getBaseStats().setCurrentHealth(player1MaxHealth);
+       player1.getChosenChampion().getBaseStats().setCurrentMana(player1MaxMana);
+
+
     }
 }
