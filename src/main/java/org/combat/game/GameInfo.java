@@ -89,4 +89,16 @@ public class GameInfo {
                         "--------------------------------------------------\n"
         );
     }
+
+    public static void printUserSelection(String player, Champion chosenChamp) {
+        System.out.print(
+                "==================================================\n" +
+                        "           CHAMPION LOCKED IN!\n" +
+                        "==================================================\n" +
+                        player + " has chosen: " + chosenChamp.getName() + " -- " + chosenChamp.getRole() + "\n" +
+                        "--------------------------------------------------\n" +
+                        "\n" +
+                        "> " + chosenChamp.getName() + " has been removed from the pool.\n"
+        );
+    }
 }

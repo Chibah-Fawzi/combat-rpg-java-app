@@ -24,6 +24,7 @@ public class Main {
         GameInfo.printChampions(champions);
         GameInfo.printCommands();
 
-        ChampionsWrapper.handleInfoCommand(player1);
+        ChampionsWrapper.selectChampion(player1);
+        ChampionsWrapper.selectChampion(player2);
     }
 }

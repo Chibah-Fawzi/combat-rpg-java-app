@@ -20,15 +20,14 @@ public class ChampionsWrapper {
     static public Champion getChampion(String championId) {
         Champion chosenChampion = null;
         for (Champion champion : champions) {
-            if (Objects.equals(champion.getId(), championId)
-                    || Objects.equalsIgnoreCase(champion.getName(), championId)) {
+            if (Objects.equals(champion.getId(), championId)) {
                 chosenChampion = champion;
             }
         }
         return chosenChampion;
     }
 
-    static public void handleInfoCommand(Player activePlayer) {
+    static public void selectChampion(Player activePlayer) {
         do {
             System.out.print(activePlayer.name + " > ");
             playerCommand = scanner.nextLine().trim();
@@ -37,18 +36,16 @@ public class ChampionsWrapper {
             String command = parts.length > 0 ? parts[0].toLowerCase() : "";
             String champInput = parts.length > 1 ? parts[1] : "";
 
+            if (!command.equals("select") && !command.equals("info") && !command.equals("show")) {
+                System.out.println("Invalid command! Use 'info <champ>' or 'select <champ>'.");
+                continue;
+            } else if (!command.equals("show") && champInput.isEmpty()) {
+                System.out.println("Please provide a champion name or ID (e.g., '" + command + " pyra').");
+                continue;
+            }
+
             if (command.equals("show")) {
                 GameInfo.printChampions(champions);
-                continue;
-            }
-
-            if (!command.equals("info")) {
-                System.out.println("Invalid command! Use 'info <champ>' or 'show'.");
-                continue;
-            }
-
-            if (champInput.isEmpty()) {
-                System.out.println("Please provide a champion name or ID (e.g., 'info pyra').");
                 continue;
             }
 
@@ -58,8 +55,13 @@ public class ChampionsWrapper {
                 continue;
             }
 
-            GameInfo.printChampionDetails(targetChampion);
-            GameInfo.printCommands();
-        } while (!playerCommand.equalsIgnoreCase("done"));
+            if (command.equals("info")) {
+                GameInfo.printChampionDetails(targetChampion);
+                GameInfo.printCommands();
+            } else if (command.equals("select")) {
+                activePlayer.setChosenChampion(targetChampion);
+                GameInfo.printUserSelection(activePlayer.name, activePlayer.getChosenChampion());
+            }
+        } while (!playerCommand.contains("select"));
     }
 }
