@@ -37,18 +37,22 @@ public class Main {
         GameInfo.printCommands();
 
         // User champ selection
-        ChampionsWrapper.selectChampion(player1);
-        ChampionsWrapper.selectChampion(player2);
+        ChampionsWrapper.selectChampion(GameInfo.startingPlayer);
+        ChampionsWrapper.selectChampion(GameInfo.startingPlayer == player1 ? player1 : player2);
 
         currentStatus = GameInfo.GameStatus.COMBAT_PHASE;
 
 
         GameInfo.printCombatStart(player1,player2);
-
         int player1MaxHealth= player1.getChosenChampion().getBaseStats().getMaxHealth();
         int player1MaxMana= player1.getChosenChampion().getBaseStats().getMaxMana();
-       player1.getChosenChampion().getBaseStats().setCurrentHealth(player1MaxHealth);
-       player1.getChosenChampion().getBaseStats().setCurrentMana(player1MaxMana);
+
+        player1.getChosenChampion().getBaseStats().setCurrentHealth(player1MaxHealth);
+        player1.getChosenChampion().getBaseStats().setCurrentMana(player1MaxMana);
+
+        GameInfo.printUnitStatus(player1);
+        GameInfo.printUnitStatus(player2);
+
 
 
     }
