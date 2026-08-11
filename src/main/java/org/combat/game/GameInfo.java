@@ -135,12 +135,40 @@ public class GameInfo {
             System.out.printf("   %-28s %-28s%n", player1.name, player2.name);
             System.out.printf("   Champion: %-18s Champion: %-18s%n", c1.getName(), c2.getName());
             System.out.printf("   Role:     %-18s Role:     %-18s%n", c1.getRole(), c2.getRole());
-            System.out.printf("   HP:       [%d/%-13d HP:       [%d/%d]%n",
+            System.out.printf("   HP:       [%d/%-13d] HP:       [%d/%d]%n",
                     c1.getBaseStats().getMaxHealth(), c1.getBaseStats().getMaxHealth(),
                     c2.getBaseStats().getMaxHealth(), c2.getBaseStats().getMaxHealth());
-            System.out.printf("   Mana:     [%d/%-13d Mana:     [%d/%d]%n",
+            System.out.printf("   Mana:     [%d/%-13d] Mana:     [%d/%d]%n",
                     c1.getBaseStats().getMaxMana(), c1.getBaseStats().getMaxMana(),
                     c2.getBaseStats().getMaxMana(), c2.getBaseStats().getMaxMana());
             System.out.println();
         }
+
+    public static void printUnitStatus(Player player) {
+        Champion champ = player.getChosenChampion();
+        BaseStats stats = champ.getBaseStats();
+
+        int hp = stats.getCurrentHealth();
+        int maxHp = stats.getMaxHealth();
+        int mana = stats.getCurrentMana();
+        int maxMana = stats.getMaxMana();
+
+        // Generate visual bars (10 blocks long)
+        String hpBar = generateBar(hp, maxHp, 10, "█", "░");
+        String manaBar = generateBar(mana, maxMana, 10, "█", "░");
+
+        System.out.println("┌────────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-15s (%-32s) │%n", player.name, champ.getName());
+        System.out.println("├────────────────────────────────────────────────────────┤");
+        System.out.printf("│ HP   [%s] %3d / %-3d                            │%n", hpBar, hp, maxHp);
+        System.out.printf("│ MANA [%s] %3d / %-3d                            │%n", manaBar, mana, maxMana);
+        System.out.println("└────────────────────────────────────────────────────────┘");
+    }
+
+    // Helper method to draw dynamic visual progress bars
+    private static String generateBar(int current, int max, int totalBlocks, String filledChar, String emptyChar) {
+        if (max <= 0) return emptyChar.repeat(totalBlocks);
+        int filledBlocks = Math.max(0, Math.min(totalBlocks, (int) Math.round((double) current / max * totalBlocks)));
+        return filledChar.repeat(filledBlocks) + emptyChar.repeat(totalBlocks - filledBlocks);
+    }
 }
