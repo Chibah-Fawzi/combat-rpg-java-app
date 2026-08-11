@@ -14,27 +14,12 @@ public class Main {
         ChampionsWrapper wrapper = mapper.readValue(jsonFile, ChampionsWrapper.class);
         List<Champion> champions = wrapper.getChampions();
 
-        for (Champion champion : champions) {
-            System.out.println("==================================================");
-            System.out.println(champion.getId() + " - " + champion.getName() + " (" + champion.getRole() + ")");
-            System.out.println("Class: " + champion.getUnitClass());
-            System.out.println("HP: " + champion.getBaseStats().getMaxHealth()
-                    + " | Mana: " + champion.getBaseStats().getMaxMana()
-                    + " | ATK: " + champion.getBaseStats().getBaseAttack());
-            System.out.println("Auto: " + champion.getAutoAttack().getName()
-                    + " [" + champion.getAutoAttack().getType() + "] x"
-                    + champion.getAutoAttack().getDamageMultiplier());
-            System.out.println("Spells:");
-            if (champion.getSpells() != null) {
-                for (Spell spell : champion.getSpells()) {
-                    System.out.println("  - " + spell.getName()
-                            + " [" + spell.getType() + "]"
-                            + " | Mana: " + spell.getManaCost()
-                            + " | CD: " + spell.getCooldownTurns()
-                            + " | Dmg: " + spell.getBaseDamage());
-                }
-            }
-            System.out.println();
-        }
+        GameInfo.printIntro();
+
+        GameInfo.PlayerNames players = GameInfo.getPlayerNames();
+        Player player1 = new Player(players.player1());
+        Player player2 = new Player(players.player2());
+
+        System.out.println("Welcome: " + player1.name + " & " + player2.name);
     }
 }
