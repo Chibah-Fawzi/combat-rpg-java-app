@@ -6,14 +6,15 @@
 
 ### Game requirements:
 - Starters
-    - [ ] User1, then User2 chooses their name
-    - [ ] First user gets shown list of all the champs and their infos
-    - [ ] You can get more info of the champions using `info champName / champId`
-    - [ ] User chooses champ using `select champName / champId`
-    - [ ] Who starts first is defined by a random number between 1 and 1000 the one who gets a higher number wins, if equality it restarts.
-    - [ ] Each user needs to start the game using `start`
+    - [x] User1, then User2 chooses their name
+    - [x] First user gets shown list of all the champs and their infos
+    - [x] You can get more info of the champions using `info champName / champId`
+    - [x] User chooses champ using `select champName / champId`
+    - [x] Who starts first is defined by a random number between 1 and 1000 the one who gets a higher number wins, if equality it restarts.
+    - [x] Each user needs to start the game using `start`
+    - [x] Second player cannot chose the same champion as the first
 - In game
-    - [ ] Instantiate selected units with full Health and starting Mana pools.
+    - [x] Instantiate selected units with full Health and starting Mana pools.
     - [ ] Initialize turn counters, cooldown trackers, and empty active status effect lists.
 
     - ### 1. Turn Start (Upkeep Phase):
