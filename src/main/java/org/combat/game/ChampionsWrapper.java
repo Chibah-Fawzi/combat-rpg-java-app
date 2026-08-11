@@ -70,11 +70,16 @@ public class ChampionsWrapper {
                     GameInfo.printChampionDetails(targetChampion);
                     GameInfo.printCommands();
                 } else if (command.equals("select")) {
-                    // SET THE SINGLE SOURCE OF TRUTH
+                    Champion firstPick = GameInfo.startingPlayer.getChosenChampion();
+                    if (activePlayer != GameInfo.startingPlayer && firstPick != null && targetChampion.getId().equals(firstPick.getId())) {
+                        System.out.println("You can't select the same champion as the starting player.");
+                        continue;
+                    }
                     activePlayer.setChosenChampion(targetChampion);
                     GameInfo.printUserSelection(activePlayer.name, activePlayer.getChosenChampion());
+
                 }
-        } while(!playerCommand.contains("select"));
+        } while(activePlayer.getChosenChampion() == null);
     }
 
 }
