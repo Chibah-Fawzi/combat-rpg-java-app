@@ -20,46 +20,76 @@ The project separates game state management, utility wrappers, and UI formatting
 
 ```mermaid
 classDiagram
-    class UnitClass {
-        <<enumeration>>
-        PHYSICAL
-        MAGICAL
-    }
+direction BT
+class AutoAttack {
+  - String name
+  - UnitClass type
+  - float damageMultiplier
+}
+class BaseStats {
+  - int currentMana
+  - int baseAttack
+  - int maxHealth
+  - int manaRegenPerAttack
+  - int currentHealth
+  - int maxMana
+}
+class Champion {
+  - List~Spell~ spell
+  - String id
+  - String role
+  - AutoAttack autoAttack
+  - BaseStats baseStats
+  - String name
+  - UnitClass unitClass
+}
+class ChampionsWrapper {
+  - String playerCommand
+  ~ Scanner scanner
+  - List~Champion~ champions
+}
+class Effect {
+  - float thresholdHpPercentage
+  - float value
+  - float manaRegenMultiplier
+  - int shieldAmount
+  - int amount
+  - String effectType
+  - int durationTurns
+  - int damagePerTurn
+  - float bonusDamageMultiplier
+  - float critMultiplier
+}
+class GameInfo {
+  + Player startingPlayer
+  ~ Scanner scanner
+}
+class Main
+class Player {
+  ~ String name
+  ~ Champion chosenChampion
+}
+class Spell {
+  - String name
+  - int manaCost
+  - int baseDamage
+  - int cooldownTurns
+  - int shieldAmount
+  - Effect effect
+  - UnitClass type
+  - int amount
+}
 
-    class GameStatus {
-        <<enumeration>>
-        DRAFT_PHASE
-        COMBAT_PHASE
-        GAME_OVER
-    }
+Champion "1" *--> "autoAttack 1" AutoAttack
+Champion "1" *--> "baseStats 1" BaseStats
+Champion "1" *--> "spell *" Spell
+ChampionsWrapper "1" *--> "champions *" Champion
+GameInfo "1" *--> "startingPlayer 1" Player
+GameInfo  ..>  Player : «create»
+Main  ..>  Player : «create»
+Player "1" *--> "chosenChampion 1" Champion
+Spell "1" *--> "effect 1" Effect
 
-    class Main {
-        +main(String[] args)$ void
-    }
-
-    class ChampionsWrapper {
-        -List~Champion~ champions$
-        +getChampion(String id)$ Champion
-        +selectChampion(Player player)$ void
-    }
-
-    class Player {
-        +String name
-        +Champion chosenChampion
-    }
-
-    class Champion {
-        +String id
-        +String name
-        +UnitClass unitClass
-        +BaseStats baseStats
-        +List~Spell~ spell
-    }
-
-    Main ..> ChampionsWrapper : manages draft
-    Main ..> GameStatus : tracks state
-    ChampionsWrapper "1" o-- "*" Champion : manages
-    Player "1" o-- "0..1" Champion : selects
 ```
 
 ## Requirements
@@ -73,8 +103,8 @@ classDiagram
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Chibah-Fawzi/combat-rpg-java-app)
+   cd combat-rpg-java-app
    ```
 
 2. **Build the project:**
