@@ -22,5 +22,8 @@ public class Main {
 
         GameInfo.printWelcome(player1, player2);
         GameInfo.printChampions(champions);
+        GameInfo.printCommands();
+
+        ChampionsWrapper.handleInfoCommand(player1);
     }
 }
