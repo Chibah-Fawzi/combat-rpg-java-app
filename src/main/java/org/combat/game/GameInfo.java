@@ -1,5 +1,6 @@
 package org.combat.game;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class GameInfo {
@@ -21,5 +22,21 @@ public class GameInfo {
         Player player2 = new Player(scanner.nextLine());
 
         return new PlayerNames(player1.name, player2.name);
+    }
+
+    public static void printWelcome(Player player1, Player player2) {
+        System.out.println("================================================================================");
+        System.out.println("Welcome: " + player1.name + " & " + player2.name);
+        System.out.print(
+                "==================================================\n" +
+                        "               AVAILABLE CHAMPIONS\n" +
+                        "==================================================\n"
+        );
+    }
+
+    public static void printChampions(List<Champion> champions) {
+        for (Champion champion : champions) {
+            System.out.println(champion.getId() + " - " + champion.getName() + " - " + champion.getRole());
+        }
     }
 }

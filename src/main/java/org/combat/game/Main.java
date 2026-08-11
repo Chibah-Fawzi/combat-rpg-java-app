@@ -20,6 +20,7 @@ public class Main {
         Player player1 = new Player(players.player1());
         Player player2 = new Player(players.player2());
 
-        System.out.println("Welcome: " + player1.name + " & " + player2.name);
+        GameInfo.printWelcome(player1, player2);
+        GameInfo.printChampions(champions);
     }
 }
