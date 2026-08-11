@@ -76,10 +76,6 @@ public class GameInfo {
 
         public static void printWelcome(Player player1, Player player2) {
             getStartingPlayer(player1, player2);
-            System.out.println("--------------------------------------------------------------------------------");
-            System.out.println("                         COIN FLIP TO DETERMINE FIRST TURN...                   ");
-            System.out.println("--------------------------------------------------------------------------------");
-            System.out.printf("> %s wins the coin toss and gets first pick!%n", startingPlayer.name);
             System.out.println();
             System.out.println("================================================================================");
             System.out.println("Welcome: " + player1.name + " & " + player2.name);
@@ -88,6 +84,12 @@ public class GameInfo {
                             "               AVAILABLE CHAMPIONS\n" +
                             "==================================================\n"
             );
+
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("                         COIN FLIP TO DETERMINE FIRST TURN...                   ");
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.printf("> %s wins the coin toss and gets first pick!%n", startingPlayer.name);
+            System.out.println();
         }
         public static void printChampions(List<Champion> champions) {
             for (Champion champion : champions) {
