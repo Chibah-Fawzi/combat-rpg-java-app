@@ -47,10 +47,10 @@ public class ChampionsWrapper {
             String champInput = parts.length > 1 ? parts[1] : "";
 
             // 2. Validate input format
-            if (!command.equals("select") && !command.equals("info")) {
+            if (!command.equals("select") && !command.equals("info") && !command.equals("show")) {
                 System.out.println("Invalid command! Use 'info <champ>' or 'select <champ>'.");
                 continue;
-            } else if (champInput.isEmpty()) {
+            } else if (champInput.isEmpty() && !command.equals("show")) {
                 System.out.println("Please provide a champion name or ID (e.g., '" + command + " pyra').");
                 continue;
             }
@@ -58,7 +58,7 @@ public class ChampionsWrapper {
             // 3. Fetch champion from wrapper
             Champion targetChampion = ChampionsWrapper.getChampion(champInput);
             // 4. Check if the select champion exists
-            if (targetChampion == null) {
+            if (targetChampion == null && !command.equals("show")) {
                 System.out.println("Champion '" + champInput + "' not found. Try again.");
                 continue;
             }
