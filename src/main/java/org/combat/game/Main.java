@@ -38,12 +38,13 @@ public class Main {
 
         // User champ selection
         ChampionsWrapper.selectChampion(GameInfo.startingPlayer);
-        ChampionsWrapper.selectChampion(GameInfo.startingPlayer == player1 ? player1 : player2);
+        ChampionsWrapper.selectChampion(GameInfo.startingPlayer == player1 ? player2 : player1);
 
         currentStatus = GameInfo.GameStatus.COMBAT_PHASE;
 
 
         GameInfo.printCombatStart(player1,player2);
+
         int player1MaxHealth= player1.getChosenChampion().getBaseStats().getMaxHealth();
         int player1MaxMana= player1.getChosenChampion().getBaseStats().getMaxMana();
 
