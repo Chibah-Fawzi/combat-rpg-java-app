@@ -45,14 +45,15 @@ public class Main {
 
         GameInfo.printCombatStart(player1,player2);
 
-        int player1MaxHealth= player1.getChosenChampion().getBaseStats().getMaxHealth();
-        int player1MaxMana= player1.getChosenChampion().getBaseStats().getMaxMana();
-
-        player1.getChosenChampion().getBaseStats().setCurrentHealth(player1MaxHealth);
-        player1.getChosenChampion().getBaseStats().setCurrentMana(player1MaxMana);
+        // ASK DON'T TELL
+        player1.initializeStats();
+        player2.initializeStats();
 
         GameInfo.printUnitStatus(player1);
         GameInfo.printUnitStatus(player2);
+
+
+
 
 
 

@@ -19,4 +19,13 @@ public class Player {
         this.chosenChampion = null;
     }
 
+    // ASK DONT TELL
+    public void initializeStats() {
+        if (chosenChampion != null && chosenChampion.getBaseStats() != null) {
+            BaseStats stats = chosenChampion.getBaseStats();
+            stats.setCurrentHealth(stats.getMaxHealth());
+            stats.setCurrentMana(stats.getMaxMana());
+        }
+    }
+
 }
