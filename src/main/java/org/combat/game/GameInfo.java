@@ -161,13 +161,44 @@ public class GameInfo {
             System.out.println("--------------------------------------------------");
         }
 
-        public static void handleCombatChoice(String choice){
+
+        public static Spell handlePlayerSpellChoice(int playerSpellChoice,Champion activeChamp){
+            return activeChamp.getOneSpell(playerSpellChoice);
+        }
+        public static void handleCombatChoice(String choice,Champion activeChamp){
             if(choice.equals("1")){
                 System.out.println("You just auto attacked.");
             } else if(choice.equals("2")){
                 System.out.println("You just used a spell");
+                handleSpellsDisplay(activeChamp);
+                String playerSpellChoice = scanner.nextLine();
+                Spell playerSpellDetail = handlePlayerSpellChoice(Integer.parseInt(playerSpellChoice),activeChamp);
+                System.out.println("You've select the : " + playerSpellDetail.getName());
             }
         }
+        public static void handleSpellsDisplay(Champion activeChamp){
+            System.out.println("\n--- Available Spells ---");
+            List<Spell> spells = activeChamp.getSpells();
+
+            for (int i = 0; i < spells.size(); i++) {
+                Spell spell = spells.get(i);
+
+                String status = "READY";
+                if (spell.getCurrentCooldown() > 0) {
+                    status = "COOLDOWN (" + spell.getCurrentCooldown() + " turns left)";
+                } else if (activeChamp.getBaseStats().getCurrentMana() < spell.getManaCost()) {
+                    status = "NOT ENOUGH MANA";
+                }
+
+                System.out.println("  [" + (i + 1) + "] " + spell.getName() +
+                        " | Mana: " + spell.getManaCost() +
+                        " | Status: " + status);
+            }
+
+            System.out.print("\nSelect a spell (1-" + spells.size() + ") or 0 to back: ");
+        }
+
+
 
         public static void printChampionStats(Player player) {
             Champion champ = player.getChosenChampion();
