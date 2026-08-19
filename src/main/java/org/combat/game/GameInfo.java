@@ -9,12 +9,13 @@ public class GameInfo {
     public enum GameStatus { DRAFT_PHASE, COMBAT_PHASE, GAME_OVER}
     public static Player startingPlayer;
 
-    public GameInfo(Player startingPlayer) {
+
+    private GameInfo(Player startingPlayer) {
         this.startingPlayer = startingPlayer;
     }
 
 
-    public static void printChampionDetails(Champion champion) {
+        public static void printChampionDetails(Champion champion) {
             if (champion == null) {
                 System.out.println("Champion not found!");
                 return;
@@ -52,28 +53,16 @@ public class GameInfo {
 
             System.out.println("==================================================");
         }
-
-             public static void printIntro() {
+        public static void printIntro() {
                 System.out.println(
                         "==================================================\n" +
                                 "              WELCOME TO JAVA RPG COMBAT\n" +
                                 "=================================================="
                 );
         }
-
         public static void getStartingPlayer(Player player1, Player player2) {
             new GameInfo(Math.random() < 0.5 ? player1 : player2);
         }
-
-        static public PlayerNames getPlayerNames(){
-            System.out.print("Player 1, please enter your name: ");
-            Player player1 = new Player(scanner.nextLine());
-            System.out.print("Player 2, please enter your name: ");
-            Player player2 = new Player(scanner.nextLine());
-
-            return new PlayerNames(player1.name, player2.name);
-        }
-
         public static void printWelcome(Player player1, Player player2) {
             getStartingPlayer(player1, player2);
             System.out.println();
@@ -117,8 +106,6 @@ public class GameInfo {
                             "> "+chosenChamp.getName() + " has been removed from the pool.\n"
             );
         }
-
-
         public static void printCombatStart(Player player1, Player player2) {
             Champion c1 = player1.getChosenChampion();
             Champion c2 = player2.getChosenChampion();
@@ -146,31 +133,77 @@ public class GameInfo {
             System.out.println();
         }
 
-    public static void printUnitStatus(Player player) {
-        Champion champ = player.getChosenChampion();
-        BaseStats stats = champ.getBaseStats();
 
-        int hp = stats.getCurrentHealth();
-        int maxHp = stats.getMaxHealth();
-        int mana = stats.getCurrentMana();
-        int maxMana = stats.getMaxMana();
+        public static void printCombatCommands(Champion activeChamp){
+            System.out.println("Choose your action:");
+            System.out.println("  [1] Auto-Attack (" + activeChamp.getAutoAttack().getName() + ")");
+            System.out.println("  [2] Cast Spell");
+            System.out.print("\nEnter choice (1-2): ");
+        }
+        public static void printCombatStats(Player activePlayer, Player defendingPlayer, int combatTurns,int combatRounds){
+            System.out.println("\n==================================================");
+            System.out.println("                  TURN " + combatTurns +"                  ROUND " + combatRounds);
+            System.out.println("==================================================");
 
-        // Generate visual bars (10 blocks long)
-        String hpBar = generateBar(hp, maxHp, 10, "█", "░");
-        String manaBar = generateBar(mana, maxMana, 10, "█", "░");
+            Champion activeChamp = activePlayer.getChosenChampion();
+            Champion defenderChamp = defendingPlayer.getChosenChampion();
 
-        System.out.println("┌────────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-15s (%-32s) │%n", player.name, champ.getName());
-        System.out.println("├────────────────────────────────────────────────────────┤");
-        System.out.printf("│ HP   [%s] %3d / %-3d                            │%n", hpBar, hp, maxHp);
-        System.out.printf("│ MANA [%s] %3d / %-3d                            │%n", manaBar, mana, maxMana);
-        System.out.println("└────────────────────────────────────────────────────────┘");
-    }
+            // Display Active Player Status
+            System.out.println("\n[ACTIVE PLAYER] " + activePlayer.name + " (" + activeChamp.getName() + ")");
+            System.out.println("  HP: " + activeChamp.getBaseStats().getCurrentHealth() + " / " + activeChamp.getBaseStats().getMaxHealth());
+            System.out.println("  Mana: " + activeChamp.getBaseStats().getCurrentMana() + " / " + activeChamp.getBaseStats().getMaxMana());
 
-    // Helper method to draw dynamic visual progress bars
-    private static String generateBar(int current, int max, int totalBlocks, String filledChar, String emptyChar) {
-        if (max <= 0) return emptyChar.repeat(totalBlocks);
-        int filledBlocks = Math.max(0, Math.min(totalBlocks, (int) Math.round((double) current / max * totalBlocks)));
-        return filledChar.repeat(filledBlocks) + emptyChar.repeat(totalBlocks - filledBlocks);
-    }
+// Display Defending Player Status
+            System.out.println("\n[OPPONENT] " + defendingPlayer.name + " (" + defenderChamp.getName() + ")");
+            System.out.println("  HP: " + defenderChamp.getBaseStats().getCurrentHealth() + " / " + defenderChamp.getBaseStats().getMaxHealth());
+            System.out.println("  Mana: " + defenderChamp.getBaseStats().getCurrentMana() + " / " + defenderChamp.getBaseStats().getMaxMana());
+
+            System.out.println("--------------------------------------------------");
+        }
+
+        public static void handleCombatChoice(String choice){
+            if(choice.equals("1")){
+                System.out.println("You just auto attacked.");
+            } else if(choice.equals("2")){
+                System.out.println("You just used a spell");
+            }
+        }
+
+        public static void printChampionStats(Player player) {
+            Champion champ = player.getChosenChampion();
+            BaseStats stats = champ.getBaseStats();
+
+            int hp = stats.getCurrentHealth();
+            int maxHp = stats.getMaxHealth();
+            int mana = stats.getCurrentMana();
+            int maxMana = stats.getMaxMana();
+
+            // Generate visual bars (10 blocks long)
+            String hpBar = generateStatsBar(hp, maxHp, 10, "█", "░");
+            String manaBar = generateStatsBar(mana, maxMana, 10, "█", "░");
+
+            System.out.println("┌────────────────────────────────────────────────────────┐");
+            System.out.printf("│ %-15s (%-32s) │%n", player.name, champ.getName());
+            System.out.println("├────────────────────────────────────────────────────────┤");
+            System.out.printf("│ HP   [%s] %3d / %-3d                            │%n", hpBar, hp, maxHp);
+            System.out.printf("│ MANA [%s] %3d / %-3d                            │%n", manaBar, mana, maxMana);
+            System.out.println("└────────────────────────────────────────────────────────┘");
+        }
+
+
+        static public PlayerNames getPlayerNames(){
+            System.out.print("Player 1, please enter your name: ");
+            Player player1 = new Player(scanner.nextLine());
+            System.out.print("Player 2, please enter your name: ");
+            Player player2 = new Player(scanner.nextLine());
+
+            return new PlayerNames(player1.name, player2.name);
+        }
+
+        // Helper method to draw dynamic visual progress bars
+        private static String generateStatsBar(int current, int max, int totalBlocks, String filledChar, String emptyChar) {
+            if (max <= 0) return emptyChar.repeat(totalBlocks);
+            int filledBlocks = Math.max(0, Math.min(totalBlocks, (int) Math.round((double) current / max * totalBlocks)));
+            return filledChar.repeat(filledBlocks) + emptyChar.repeat(totalBlocks - filledBlocks);
+        }
 }

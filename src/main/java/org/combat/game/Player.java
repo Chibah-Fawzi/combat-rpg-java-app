@@ -4,6 +4,7 @@ public class Player {
     String name;
     Champion chosenChampion;
 
+
     public Champion getChosenChampion() {
         return chosenChampion;
     }
@@ -26,6 +27,11 @@ public class Player {
             stats.setCurrentHealth(stats.getMaxHealth());
             stats.setCurrentMana(stats.getMaxMana());
         }
+    }
+
+    public boolean isAlive(){
+        BaseStats stats = chosenChampion.getBaseStats();
+        return stats.getCurrentHealth() > 0;
     }
 
 }
