@@ -163,19 +163,56 @@ public class GameInfo {
 
 
         public static Spell handlePlayerSpellChoice(int playerSpellChoice,Champion activeChamp){
-            return activeChamp.getOneSpell(playerSpellChoice);
+            return activeChamp.getOneSpell(playerSpellChoice - 1);
         }
-        public static void handleCombatChoice(String choice,Champion activeChamp){
-            if(choice.equals("1")){
+
+    public static void handleCombatChoice(String initialChoice, Champion activeChamp) {
+        boolean actionCompleted = false;
+
+        while (!actionCompleted) {
+            if (initialChoice.equals("1")) {
                 System.out.println("You just auto attacked.");
-            } else if(choice.equals("2")){
-                System.out.println("You just used a spell");
+                actionCompleted = true; // Turn finished successfully
+
+            } else if (initialChoice.equals("2")) {
                 handleSpellsDisplay(activeChamp);
-                String playerSpellChoice = scanner.nextLine();
-                Spell playerSpellDetail = handlePlayerSpellChoice(Integer.parseInt(playerSpellChoice),activeChamp);
-                System.out.println("You've select the : " + playerSpellDetail.getName());
+                String input = scanner.nextLine().trim();
+
+                int playerSpellChoice;
+                try {
+                    playerSpellChoice = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input! Please enter a valid number.");
+                    continue; // Re-prompt spell selection
+                }
+
+                // --- GO BACK (0) ---
+                if (playerSpellChoice == 0) {
+                    printCombatCommands(activeChamp);
+                    initialChoice = scanner.nextLine().trim(); // Re-read main action choice (1 or 2)
+                    continue; // Restart loop with the new initialChoice
+                }
+
+                // --- SPELL VALIDATION ---
+                List<Spell> spells = activeChamp.getSpells();
+                if (playerSpellChoice < 1 || playerSpellChoice > spells.size()) {
+                    System.out.println("Invalid choice! Select a number between 1 and " + spells.size() + ".");
+                    continue; // Re-prompt spell selection
+                }
+
+                Spell playerSpellDetail = handlePlayerSpellChoice(playerSpellChoice, activeChamp);
+                System.out.println("You've selected: " + playerSpellDetail.getName());
+                actionCompleted = true; // Turn finished successfully
+
+            } else {
+                System.out.println("Invalid choice. Please choose 1 or 2.");
+                printCombatCommands(activeChamp);
+                initialChoice = scanner.nextLine().trim();
             }
         }
+    }
+
+
         public static void handleSpellsDisplay(Champion activeChamp){
             System.out.println("\n--- Available Spells ---");
             List<Spell> spells = activeChamp.getSpells();

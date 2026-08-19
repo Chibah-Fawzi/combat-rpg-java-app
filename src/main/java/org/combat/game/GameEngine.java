@@ -54,7 +54,7 @@ public class GameEngine {
             playerCombatChoice = scanner.nextLine();
         }
 
-        GameInfo.handleCombatChoice(playerCombatChoice);
+        GameInfo.handleCombatChoice(playerCombatChoice,activeChamp);
         System.out.println("Passed to next step");
     }
     private void playTurn(Player activePlayer, Player defendingPlayer){
