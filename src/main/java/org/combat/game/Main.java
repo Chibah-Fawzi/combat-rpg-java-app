@@ -1,12 +1,9 @@
 package org.combat.game;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
-import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -45,17 +42,16 @@ public class Main {
 
         GameInfo.printCombatStart(player1,player2);
 
-        // ASK DON'T TELL
+        // Player health and mana initialization
         player1.initializeStats();
         player2.initializeStats();
 
-        GameInfo.printUnitStatus(player1);
-        GameInfo.printUnitStatus(player2);
+        // Display champions stats
+        GameInfo.printChampionStats(player1);
+        GameInfo.printChampionStats(player2);
 
-
-
-
-
-
+        // Create an instance of the engine for the new game.
+        GameEngine engine = new GameEngine();
+        engine.startGame(GameInfo.startingPlayer, player1, player2);
     }
 }

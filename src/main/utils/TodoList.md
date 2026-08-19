@@ -15,12 +15,12 @@
     - [x] Second player cannot chose the same champion as the first
 - In game
     - [x] Instantiate selected units with full Health and starting Mana pools.
-    - [ ] Initialize turn counters, cooldown trackers, and empty active status effect lists.
+    - [x] Initialize turn counters, cooldown trackers, and empty active status effect lists.
 
     - ### 1. Turn Start (Upkeep Phase):
-        - [ ] Status Effect Ticks: Process active status effects on the current unit (e.g., apply Poison/Burn damage, tick down duration counters).
-        - [ ] Cooldown Reduction: Decrement remaining cooldown timers by 1 turn for all spells on standby.
-        - [ ] State Check: Verify if the active unit died from turn-start status damage before allowing actions.
+        - [x] Status Effect Ticks: Process active status effects on the current unit (e.g., apply Poison/Burn damage, tick down duration counters).
+        - [x] Cooldown Reduction: Decrement remaining cooldown timers by 1 turn for all spells on standby.
+        - [x] State Check: Verify if the active unit died from turn-start status damage before allowing actions.
 
     - ### 2. Action Selection Phase:
         - **Free Action: Cast Spells (Repeatable)**
