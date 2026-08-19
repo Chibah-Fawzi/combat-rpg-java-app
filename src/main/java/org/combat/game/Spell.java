@@ -1,18 +1,31 @@
 package org.combat.game;
 
 
+import java.util.List;
+
 public class Spell {
 
     private String name;
     private Champion.UnitClass type;
     private int manaCost;
     private int cooldownTurns;
+    private int currentCooldown;
+
+
     private int baseDamage;
     private Effect effect;
     private int amount;
     private int shieldAmount;
 
 
+
+    public int getCurrentCooldown() {
+        return currentCooldown;
+    }
+
+    public void setCurrentCooldown(int currentCooldown) {
+        this.currentCooldown = currentCooldown;
+    }
 
     public String getName() {
         return name;
@@ -79,5 +92,7 @@ public class Spell {
     public void setShieldAmount(int shieldAmount) {
         this.shieldAmount = shieldAmount;
     }
+
+
 
 }

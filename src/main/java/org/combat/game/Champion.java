@@ -17,7 +17,20 @@ public class Champion {
     private AutoAttack autoAttack;
     @JsonProperty("spells")
     private List<Spell> spell;
+    int effectDuration;
 
+    public int getEffectDuration() {
+        return effectDuration;
+    }
+
+    public void setEffectDuration(int effectDuration) {
+        this.effectDuration = effectDuration;
+    }
+    private List<ActiveEffect> activeEffects;
+
+    public List<ActiveEffect> getActiveEffects() {
+        return activeEffects;
+    }
 
     public String getRole() {
         return role;
