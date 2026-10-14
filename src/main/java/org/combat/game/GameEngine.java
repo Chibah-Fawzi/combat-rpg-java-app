@@ -34,8 +34,6 @@ public class GameEngine {
         effects.removeIf(ActiveEffect::isExpired);
         }
 
-
-
     }
     private void handleDisplayPhase(Player player){
         // Print turn number, HP/Mana bars, active debuffs, command options
@@ -54,19 +52,17 @@ public class GameEngine {
             playerCombatChoice = scanner.nextLine();
         }
 
-        GameInfo.handleCombatChoice(playerCombatChoice,activeChamp);
+        GameInfo.handleCombatChoice(playerCombatChoice,activeChamp, defendingPlayer.chosenChampion);
         System.out.println("Passed to next step");
     }
     private void playTurn(Player activePlayer, Player defendingPlayer){
         Champion chosenChampionActive = activePlayer.chosenChampion;
-        Champion chosenChampionDefender = defendingPlayer.chosenChampion;
+//        Champion chosenChampionDefender = defendingPlayer.chosenChampion;
          handleUpkeepPhase(activePlayer);
          handleDisplayPhase(activePlayer);
          handleActionPhase(chosenChampionActive, activePlayer, defendingPlayer);
-
-//        chosenChampionActive.getOneSpell(1)
-
     }
+
     public void startGame(Player activePlayer, Player player1, Player player2){
 
         // Add isAlive method in Player class that return true if currentHealth > 0;

@@ -13,8 +13,16 @@ public class GameInfo {
     private GameInfo(Player startingPlayer) {
         this.startingPlayer = startingPlayer;
     }
+        static public PlayerNames getPlayerNames(){
+        System.out.print("Player 1, please enter your name: ");
+        Player player1 = new Player(scanner.nextLine());
+        System.out.print("Player 2, please enter your name: ");
+        Player player2 = new Player(scanner.nextLine());
 
+        return new PlayerNames(player1.name, player2.name);
+    }
 
+        // INTRODUCTION LOGS
         public static void printChampionDetails(Champion champion) {
             if (champion == null) {
                 System.out.println("Champion not found!");
@@ -106,6 +114,8 @@ public class GameInfo {
                             "> "+chosenChamp.getName() + " has been removed from the pool.\n"
             );
         }
+
+        // COMBAT INFO LOGS
         public static void printCombatStart(Player player1, Player player2) {
             Champion c1 = player1.getChosenChampion();
             Champion c2 = player2.getChosenChampion();
@@ -132,8 +142,6 @@ public class GameInfo {
                     c2.getBaseStats().getMaxMana(), c2.getBaseStats().getMaxMana());
             System.out.println();
         }
-
-
         public static void printCombatCommands(Champion activeChamp){
             System.out.println("Choose your action:");
             System.out.println("  [1] Auto-Attack (" + activeChamp.getAutoAttack().getName() + ")");
@@ -160,13 +168,32 @@ public class GameInfo {
 
             System.out.println("--------------------------------------------------");
         }
+        public static void printChampionStats(Player player) {
+        Champion champ = player.getChosenChampion();
+        BaseStats stats = champ.getBaseStats();
 
+        int hp = stats.getCurrentHealth();
+        int maxHp = stats.getMaxHealth();
+        int mana = stats.getCurrentMana();
+        int maxMana = stats.getMaxMana();
 
+        // Generate visual bars (10 blocks long)
+        String hpBar = generateStatsBar(hp, maxHp, 10, "█", "░");
+        String manaBar = generateStatsBar(mana, maxMana, 10, "█", "░");
+
+        System.out.println("┌────────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-15s (%-32s) │%n", player.name, champ.getName());
+        System.out.println("├────────────────────────────────────────────────────────┤");
+        System.out.printf("│ HP   [%s] %3d / %-3d                            │%n", hpBar, hp, maxHp);
+        System.out.printf("│ MANA [%s] %3d / %-3d                            │%n", manaBar, mana, maxMana);
+        System.out.println("└────────────────────────────────────────────────────────┘");
+    }
+
+        // COMBAT COMMANDS
         public static Spell handlePlayerSpellChoice(int playerSpellChoice,Champion activeChamp){
             return activeChamp.getOneSpell(playerSpellChoice - 1);
         }
-
-    public static void handleCombatChoice(String initialChoice, Champion activeChamp) {
+        public static void handleCombatChoice(String initialChoice, Champion activeChamp, Champion defendingChampion) {
         boolean actionCompleted = false;
 
         while (!actionCompleted) {
@@ -200,8 +227,44 @@ public class GameInfo {
                     continue; // Re-prompt spell selection
                 }
 
-                Spell playerSpellDetail = handlePlayerSpellChoice(playerSpellChoice, activeChamp);
-                System.out.println("You've selected: " + playerSpellDetail.getName());
+                // Get the used spell's details
+                Spell usedSpellDetails = handlePlayerSpellChoice(playerSpellChoice, activeChamp);
+                System.out.println("You've selected: " + usedSpellDetails.getName());
+
+                // Get used spell's current cooldown
+                int usedSpellCD = usedSpellDetails.getCurrentCooldown();
+
+                // Check if spell cd is 0
+                if(usedSpellCD > 0){
+                    System.out.println("You can't use this spell yet try in " + usedSpellCD + " turn.");
+                    printCombatCommands(activeChamp);
+                    initialChoice = scanner.nextLine().trim(); // Re-read main action choice (1 or 2)
+                    continue; // Restart loop with the new initialChoice
+                } else {
+                    // Reset spell's cooldown
+                    usedSpellDetails.setCooldownTurns(activeChamp.getOneSpell(playerSpellChoice).getCooldownTurns());
+                }
+
+                int usedSpellManaCost = usedSpellDetails.getManaCost();
+                int currentPlayerMana= activeChamp.getBaseStats().getCurrentMana();
+                // check if player's current mana => spell's mana cost
+                if(currentPlayerMana >= usedSpellManaCost){
+                    // Deduct mana cost from player's current mana
+                    activeChamp.getBaseStats().setCurrentMana(currentPlayerMana - usedSpellCD);
+                    // Calculate spell damage
+                    int spellDamage = usedSpellDetails.getBaseDamage();
+                    // Get opponent's current health
+                    int defendingChampionCurrentHp = defendingChampion.getBaseStats().getCurrentHealth();
+                    // Inflict damage to opponent
+                    defendingChampion.getBaseStats().setCurrentHealth(defendingChampionCurrentHp - spellDamage);
+                    // apply the effects of the spell
+                } else {
+                    System.out.println("You don't have enough mana to use this spell.");
+                    printCombatCommands(activeChamp);
+                    initialChoice = scanner.nextLine().trim(); // Re-read main action choice (1 or 2)
+                    continue; // Restart loop with the new initialChoice
+                }
+
                 actionCompleted = true; // Turn finished successfully
 
             } else {
@@ -211,8 +274,6 @@ public class GameInfo {
             }
         }
     }
-
-
         public static void handleSpellsDisplay(Champion activeChamp){
             System.out.println("\n--- Available Spells ---");
             List<Spell> spells = activeChamp.getSpells();
@@ -233,39 +294,6 @@ public class GameInfo {
             }
 
             System.out.print("\nSelect a spell (1-" + spells.size() + ") or 0 to back: ");
-        }
-
-
-
-        public static void printChampionStats(Player player) {
-            Champion champ = player.getChosenChampion();
-            BaseStats stats = champ.getBaseStats();
-
-            int hp = stats.getCurrentHealth();
-            int maxHp = stats.getMaxHealth();
-            int mana = stats.getCurrentMana();
-            int maxMana = stats.getMaxMana();
-
-            // Generate visual bars (10 blocks long)
-            String hpBar = generateStatsBar(hp, maxHp, 10, "█", "░");
-            String manaBar = generateStatsBar(mana, maxMana, 10, "█", "░");
-
-            System.out.println("┌────────────────────────────────────────────────────────┐");
-            System.out.printf("│ %-15s (%-32s) │%n", player.name, champ.getName());
-            System.out.println("├────────────────────────────────────────────────────────┤");
-            System.out.printf("│ HP   [%s] %3d / %-3d                            │%n", hpBar, hp, maxHp);
-            System.out.printf("│ MANA [%s] %3d / %-3d                            │%n", manaBar, mana, maxMana);
-            System.out.println("└────────────────────────────────────────────────────────┘");
-        }
-
-
-        static public PlayerNames getPlayerNames(){
-            System.out.print("Player 1, please enter your name: ");
-            Player player1 = new Player(scanner.nextLine());
-            System.out.print("Player 2, please enter your name: ");
-            Player player2 = new Player(scanner.nextLine());
-
-            return new PlayerNames(player1.name, player2.name);
         }
 
         // Helper method to draw dynamic visual progress bars
