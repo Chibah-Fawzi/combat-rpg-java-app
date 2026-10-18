@@ -6,7 +6,8 @@ public class BaseStats {
     private int maxMana;
     private int manaRegenPerAttack;
     private int currentMana;
-    private int currentHealth;
+    private float currentHealth;
+    private float baseArmor = 0;
 
 //    public BaseStats(int maxHealth, int baseAttack, int maxMana, int manaRegenPerAttack, int currentMana, int currentHealth) {
 //        this.maxHealth = maxHealth;
@@ -35,9 +36,12 @@ public class BaseStats {
 
     public void setManaRegenPerAttack(int manaRegenPerAttack) {this.manaRegenPerAttack = manaRegenPerAttack;}
 
+    public float getBaseArmor() {return baseArmor;}
+
+    public void setBaseArmor(float baseArmor) {this.baseArmor = baseArmor;}
 
     public int getCurrentMana() {return currentMana;}
-    public int getCurrentHealth() {return currentHealth;}
+    public float getCurrentHealth() {return currentHealth;}
     public void setCurrentMana(int currentMana) {this.currentMana = currentMana;}
-    public void setCurrentHealth(int currentHealth) {this.currentHealth = currentHealth;}
+    public void setCurrentHealth(float currentHealth) {this.currentHealth = currentHealth;}
 }

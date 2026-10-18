@@ -172,7 +172,7 @@ public class GameInfo {
         Champion champ = player.getChosenChampion();
         BaseStats stats = champ.getBaseStats();
 
-        int hp = stats.getCurrentHealth();
+        float hp = stats.getCurrentHealth();
         int maxHp = stats.getMaxHealth();
         int mana = stats.getCurrentMana();
         int maxMana = stats.getMaxMana();
@@ -254,10 +254,12 @@ public class GameInfo {
                     // Calculate spell damage
                     int spellDamage = usedSpellDetails.getBaseDamage();
                     // Get opponent's current health
-                    int defendingChampionCurrentHp = defendingChampion.getBaseStats().getCurrentHealth();
+                    float defendingChampionCurrentHp = defendingChampion.getBaseStats().getCurrentHealth();
                     // Inflict damage to opponent
                     defendingChampion.getBaseStats().setCurrentHealth(defendingChampionCurrentHp - spellDamage);
                     // apply the effects of the spell
+                    applyEffect(usedSpellDetails.getEffect(), defendingChampion);
+
                 } else {
                     System.out.println("You don't have enough mana to use this spell.");
                     printCombatCommands(activeChamp);
@@ -274,6 +276,53 @@ public class GameInfo {
             }
         }
     }
+        public static void applyEffect(Effect effect, Champion affectedChampion){
+            switch (effect.getEffectType()) {
+                case "ARMOR_REDUCTION":
+                    // Reduces the target’s total base armor by a fixed percentage for a set duration
+                    System.out.println("ARMOR_REDUCTION effect has been applied.");
+                   // Effective Armor=Base Armor×(1−Value)
+                    float armorReductionAmount = affectedChampion.getBaseStats().getBaseArmor() * (1-effect.getValue());
+                    affectedChampion.getBaseStats().setBaseArmor(armorReductionAmount);
+                    break;
+                case "EXECUTE":
+                    System.out.println("EXECUTE effect has been applied.");
+                    float targetCurrentHP = affectedChampion.getBaseStats().getCurrentHealth();
+                    int targetMaxHP = affectedChampion.getBaseStats().getMaxHealth();
+
+                    float targetHpPercentage = targetCurrentHP / targetMaxHP;
+                    // Checks if the target's current health percentage is at or below a critical threshold.
+                    float appliedDamage;
+                    if(targetHpPercentage <= effect.getThresholdHpPercentage()){
+                    // If true, applies a bonus damage multiplier to the spell's base damage.
+                         appliedDamage = effect.getValue() * (1 * effect.getBonusDamageMultiplier());
+                        affectedChampion.getBaseStats().setCurrentHealth(targetCurrentHP-appliedDamage);
+                    } else {
+                        appliedDamage = effect.getValue();
+                        affectedChampion.getBaseStats().setCurrentHealth(appliedDamage);
+                    }
+
+                    break;
+                case "POISON":
+                    System.out.println("POISON effect has been applied.");
+                    break;
+                case "BURN":
+                    System.out.println("BURN effect has been applied.");
+                    break;
+                case "BUFF":
+                    System.out.println("BUFF effect has been applied.");
+                    break;
+                case "SHIELD":
+                    System.out.println("SHIELD effect has been applied.");
+                    break;
+                case "MANA_STEAL":
+                    System.out.println("MANA_STEAL effect has been applied.");
+                    break;
+                default:
+                    System.out.println("An error in the effect application happened.");
+                    break;
+            }
+        }
         public static void handleSpellsDisplay(Champion activeChamp){
             System.out.println("\n--- Available Spells ---");
             List<Spell> spells = activeChamp.getSpells();
@@ -297,7 +346,7 @@ public class GameInfo {
         }
 
         // Helper method to draw dynamic visual progress bars
-        private static String generateStatsBar(int current, int max, int totalBlocks, String filledChar, String emptyChar) {
+        private static String generateStatsBar(float current, int max, int totalBlocks, String filledChar, String emptyChar) {
             if (max <= 0) return emptyChar.repeat(totalBlocks);
             int filledBlocks = Math.max(0, Math.min(totalBlocks, (int) Math.round((double) current / max * totalBlocks)));
             return filledChar.repeat(filledBlocks) + emptyChar.repeat(totalBlocks - filledBlocks);
