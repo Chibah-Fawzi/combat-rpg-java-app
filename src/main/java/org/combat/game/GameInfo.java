@@ -258,7 +258,7 @@ public class GameInfo {
                     // Inflict damage to opponent
                     defendingChampion.getBaseStats().setCurrentHealth(defendingChampionCurrentHp - spellDamage);
                     // apply the effects of the spell
-                    applyEffect(usedSpellDetails.getEffect(), defendingChampion);
+                    applyEffect(usedSpellDetails.getEffect(), defendingChampion, activeChamp);
 
                 } else {
                     System.out.println("You don't have enough mana to use this spell.");
@@ -276,7 +276,11 @@ public class GameInfo {
             }
         }
     }
-        public static void applyEffect(Effect effect, Champion affectedChampion){
+        public static void applyEffect(Effect effect, Champion affectedChampion, Champion casterChampion){
+            float targetCurrentHP = affectedChampion.getBaseStats().getCurrentHealth();
+            int targetMaxHP = affectedChampion.getBaseStats().getMaxHealth();
+
+            float targetHpPercentage = targetCurrentHP / targetMaxHP;
             switch (effect.getEffectType()) {
                 case "ARMOR_REDUCTION":
                     // Reduces the target’s total base armor by a fixed percentage for a set duration
@@ -287,10 +291,6 @@ public class GameInfo {
                     break;
                 case "EXECUTE":
                     System.out.println("EXECUTE effect has been applied.");
-                    float targetCurrentHP = affectedChampion.getBaseStats().getCurrentHealth();
-                    int targetMaxHP = affectedChampion.getBaseStats().getMaxHealth();
-
-                    float targetHpPercentage = targetCurrentHP / targetMaxHP;
                     // Checks if the target's current health percentage is at or below a critical threshold.
                     float appliedDamage;
                     if(targetHpPercentage <= effect.getThresholdHpPercentage()){
@@ -301,13 +301,11 @@ public class GameInfo {
                         appliedDamage = effect.getValue();
                         affectedChampion.getBaseStats().setCurrentHealth(appliedDamage);
                     }
-
                     break;
-                case "POISON":
+                case "POISON","BURN":
                     System.out.println("POISON effect has been applied.");
-                    break;
-                case "BURN":
-                    System.out.println("BURN effect has been applied.");
+                    float totalDamage = effect.getDamagePerTurn() * effect.getDurationTurns();
+                    affectedChampion.getBaseStats().setCurrentHealth(targetCurrentHP - totalDamage);
                     break;
                 case "BUFF":
                     System.out.println("BUFF effect has been applied.");
@@ -317,6 +315,17 @@ public class GameInfo {
                     break;
                 case "MANA_STEAL":
                     System.out.println("MANA_STEAL effect has been applied.");
+                    int opponentMana = affectedChampion.getBaseStats().getCurrentMana();
+                    //Actual Mana Drained=min(Target Current Mana,Amount)
+                    int manaDrained = Math.min(opponentMana, effect.getAmount());
+                    //Target New Mana=Target Current Mana−Actual Mana Drained
+                    affectedChampion.getBaseStats().setCurrentMana(opponentMana - manaDrained);
+                    //Caster New Mana=min(Caster Max Mana,Caster Current Mana+Actual Mana Drained)
+                    int casterMaxMana = casterChampion.getBaseStats().getMaxMana();
+                    int casterCurrentMana = casterChampion.getBaseStats().getCurrentMana();
+                    casterChampion.getBaseStats().setCurrentMana(Math.min(casterMaxMana,(casterCurrentMana+manaDrained)));
+
+
                     break;
                 default:
                     System.out.println("An error in the effect application happened.");
