@@ -8,15 +8,12 @@ public class BaseStats {
     private int currentMana;
     private float currentHealth;
     private float baseArmor = 0;
+    private float attackDamageMultiplier;
 
-//    public BaseStats(int maxHealth, int baseAttack, int maxMana, int manaRegenPerAttack, int currentMana, int currentHealth) {
-//        this.maxHealth = maxHealth;
-//        this.baseAttack = baseAttack;
-//        this.maxMana = maxMana;
-//        this.manaRegenPerAttack = manaRegenPerAttack;
-//        this.currentMana = currentMana;
-//        this.currentHealth = currentHealth;
-//    }
+
+    public float getAttackDamageMultiplier() {return attackDamageMultiplier;}
+
+    public void setAttackDamageMultiplier(float attackDamageMultiplier) {this.attackDamageMultiplier = attackDamageMultiplier;}
 
     public int getMaxHealth() {return maxHealth;}
 

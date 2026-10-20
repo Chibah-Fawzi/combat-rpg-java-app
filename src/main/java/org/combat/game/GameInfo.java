@@ -279,7 +279,8 @@ public class GameInfo {
         public static void applyEffect(Effect effect, Champion affectedChampion, Champion casterChampion){
             float targetCurrentHP = affectedChampion.getBaseStats().getCurrentHealth();
             int targetMaxHP = affectedChampion.getBaseStats().getMaxHealth();
-
+            int casterCurrentMana = casterChampion.getBaseStats().getCurrentMana();
+            int casterBaseAD = casterChampion.getBaseStats().getBaseAttack();
             float targetHpPercentage = targetCurrentHP / targetMaxHP;
             switch (effect.getEffectType()) {
                 case "ARMOR_REDUCTION":
@@ -309,6 +310,21 @@ public class GameInfo {
                     break;
                 case "BUFF":
                     System.out.println("BUFF effect has been applied.");
+                    // Empowers the champion's next incoming basic auto-attack to deal critical damage and generate bonus mana resource
+
+                    int casterChampionBaseAD = casterChampion.getBaseStats().getBaseAttack();
+                    float casterChampionBaseADMultip = casterChampion.getBaseStats().getAttackDamageMultiplier();
+                    int casterBaseADManaRegen = casterChampion.getBaseStats().getManaRegenPerAttack();
+
+                    //Buffed Attack Damage=Base Attack×Auto Attack Multiplier×Crit Multiplier
+                    float buffedAD = casterChampionBaseAD * casterChampionBaseADMultip * effect.getCritMultiplier();
+
+                    // Buffed Mana Gain=Base Mana Regen Per Attack×Mana Regen Multiplier
+                    int buffedManaGain = (int)((int) casterBaseADManaRegen * effect.getManaRegenMultiplier());
+
+
+                    casterChampion.getBaseStats().setCurrentMana(casterCurrentMana + buffedManaGain);
+                    casterChampion.getBaseStats().setBaseAttack((int)buffedAD);
                     break;
                 case "SHIELD":
                     System.out.println("SHIELD effect has been applied.");
@@ -322,10 +338,7 @@ public class GameInfo {
                     affectedChampion.getBaseStats().setCurrentMana(opponentMana - manaDrained);
                     //Caster New Mana=min(Caster Max Mana,Caster Current Mana+Actual Mana Drained)
                     int casterMaxMana = casterChampion.getBaseStats().getMaxMana();
-                    int casterCurrentMana = casterChampion.getBaseStats().getCurrentMana();
                     casterChampion.getBaseStats().setCurrentMana(Math.min(casterMaxMana,(casterCurrentMana+manaDrained)));
-
-
                     break;
                 default:
                     System.out.println("An error in the effect application happened.");
